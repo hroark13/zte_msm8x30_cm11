@@ -220,6 +220,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungQualcommRIL \
     ro.telephony.call_ring.multiple=0
 
+ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
+ADDITIONAL_DEFAULT_PROPERTIES += ro.adb.secure=0
+ADDITIONAL_DEFAULT_PROPERTIES += persist.service.adb.enable=1                                                    
+ADDITIONAL_DEFAULT_PROPERTIES += persist.service.debuggable=1
 
 # For userdebug builds
 ADDITIONAL_DEFAULT_PROPERTIES += \
