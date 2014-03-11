@@ -1,0 +1,8 @@
+# system.prop for metis
+#
+
+# cannot take spaces
+rild.libargs=-d /dev/smd0
+
+
+ro.telephony.default_network=9
