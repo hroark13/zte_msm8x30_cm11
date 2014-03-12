@@ -236,6 +236,7 @@ PRODUCT_COPY_FILES += \
 
 # Sensors
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/proprietary/bin/akmd8962_new:system/bin/akmd8962_new \
     $(LOCAL_PATH)/proprietary/bin/sensors.qcom:system/bin/sensors.qcom \
     $(LOCAL_PATH)/proprietary/bin/proximity.init:system/bin/proximity.init \
     $(LOCAL_PATH)/proprietary/bin/geomagneticd:system/bin/geomagneticd \
@@ -301,7 +302,6 @@ PRODUCT_COPY_FILES += \
 
 # CALLED IN INIT.RC MAY NOT NEED
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/proprietary/bin/akmd8962_new:system/bin/akmd8962_new \
     $(LOCAL_PATH)/proprietary/bin/bridgemgrd:system/bin/bridgemgrd \
     $(LOCAL_PATH)/proprietary/bin/cnd:system/bin/cnd \
     $(LOCAL_PATH)/proprietary/bin/mm-pp-daemon:system/bin/mm-pp-daemon \
