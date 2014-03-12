@@ -44,23 +44,61 @@ DEVICE_PACKAGE_OVERLAYS += device/zte/msm8x30-common/overlay
 PRODUCT_AAPT_CONFIG := normal hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 
+# We have enough storage space to hold precise GC data
+PRODUCT_TAGS += dalvik.gc.type-precise
+
 PRODUCT_BOOT_JARS += qcmediaplayer
 
 # Boot animation
-TARGET_SCREEN_HEIGHT := 960
-TARGET_SCREEN_WIDTH := 540
+TARGET_SCREEN_HEIGHT := 800
+TARGET_SCREEN_WIDTH := 480
 
-# SoftAP
+# Graphics
+PRODUCT_PACKAGES += \
+    copybit.msm8960 \
+    gralloc.msm8960 \
+    hwcomposer.msm8960 \
+    memtrack.msm8960 \
+    power.msm8960 \
+    libgenlock \
+    libmemalloc \
+    liboverlay \
+    libqdutils
+
+# Audio
+PRODUCT_PACKAGES += \
+    audio_policy.msm8960 \
+    audio.primary.msm8960 \
+    audio.a2dp.default \
+    audio.usb.default \
+    audio.r_submix.default \
+    libaudio-resampler
+
+# Media
+PRODUCT_PACKAGES += \
+    libdivxdrmdecrypt \
+    libmm-omxcore \
+    libOmxCore \
+    libc2dcolorconvert \
+    libOmxVdecHevc \
+    libstagefrighthw \
+    libOmxVdec \
+    libOmxVenc \
+    libOmxAacEnc \
+    libOmxAmrEnc \
+    libOmxEvrcEnc \
+    libOmxQcelp13Enc \
+    libdashplayer \
+    qcmediaplayer
+
+# Camera
+PRODUCT_PACKAGES += \
+    camera.msm8960
+
+# WiFi
 PRODUCT_PACKAGES += \
     libQWiFiSoftApCfg \
     libqsap_sdk
-
-# CRDA
-PRODUCT_PACKAGES += \
-    crda \
-    regdbdump \
-    regulatory.bin \
-    linville.key.pub.pem
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -75,6 +113,13 @@ PRODUCT_PACKAGES += \
     FM2 \
     FMRecord
 
+# CRDA
+PRODUCT_PACKAGES += \
+    crda \
+    regdbdump \
+    regulatory.bin \
+    linville.key.pub.pem
+
 # Torch
 PRODUCT_PACKAGES += Torch
 
@@ -83,30 +128,6 @@ PRODUCT_PACKAGES += lights.msm8960
 
 # QRNGD
 PRODUCT_PACKAGES += qrngd
-
-# qcmediaplayer
-PRODUCT_PACKAGES += qcmediaplayer
-
-# Audio
-PRODUCT_PACKAGES += \
-    audio_policy.msm8960 \
-    audio.primary.msm8960 \
-    audio.a2dp.default \
-    audio.usb.default \
-    audio.r_submix.default \
-    libaudio-resampler
-
-# HAL
-PRODUCT_PACKAGES += \
-    copybit.msm8960 \
-    gralloc.msm8960 \
-    hwcomposer.msm8960 \
-    memtrack.msm8960 \
-    power.msm8960
-
-# Camera Wrapper
-PRODUCT_PACKAGES += \
-    camera.msm8960
 
 # Thermal profiles
 PRODUCT_PACKAGES += \
@@ -123,38 +144,6 @@ PRODUCT_PACKAGES += \
     LiveWallpapersPicker \
     VisualizationWallpapers \
     librs_jni
-
-
-# Needed to reset bootmode when leaving recovery
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/postrecoveryboot.sh:recovery/root/sbin/postrecoveryboot.sh \
-    $(LOCAL_PATH)/recovery/postrecoveryboot.sh:recovery/system/bin/postrecoveryboot.sh
-
-# We have enough storage space to hold precise GC data
-PRODUCT_TAGS += dalvik.gc.type-precise
-
-# QCOM Display
-PRODUCT_PACKAGES += \
-    libgenlock \
-    libmemalloc \
-    liboverlay \
-    libqdutils
-
-# Omx
-PRODUCT_PACKAGES += \
-    libdivxdrmdecrypt \
-    libmm-omxcore \
-    libOmxCore \
-    libc2dcolorconvert \
-    libOmxVdecHevc \
-    libstagefrighthw \
-    libOmxVdec \
-    libOmxVenc \
-    libOmxAacEnc \
-    libOmxAmrEnc \
-    libOmxEvrcEnc \
-    libOmxQcelp13Enc \
-    libdashplayer
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -220,14 +209,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungQualcommRIL \
     ro.telephony.call_ring.multiple=0
 
-ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
-ADDITIONAL_DEFAULT_PROPERTIES += ro.adb.secure=0
-ADDITIONAL_DEFAULT_PROPERTIES += persist.service.adb.enable=1                                                    
-ADDITIONAL_DEFAULT_PROPERTIES += persist.service.debuggable=1
-
 # For userdebug builds
 ADDITIONAL_DEFAULT_PROPERTIES += \
-    ro.secure=0
+    ro.secure=0 \
+    ro.adb.secure=0 \
+    persist.service.adb.enable=1 \
+    persist.service.debuggable=1
+
 
 # call dalvik heap config
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
