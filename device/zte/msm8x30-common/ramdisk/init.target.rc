@@ -372,6 +372,17 @@ on post-fs-data
     chmod 664 /sys/power/cpufreq_table
     chmod 664 /sys/class/kgsl/kgsl-3d0/max_pwrlevel
 
+#ZTE_AKMD_FYA 20111020 +++++++++++++
+# Change owner&&group for AKM devices
+    chown system system /sys/class/compass/akm8962/enable_acc
+    chown system system /sys/class/compass/akm8962/enable_mag
+    chown system system /sys/class/compass/akm8962/enable_ori
+    chown system system /sys/class/compass/akm8962/delay_acc
+    chown system system /sys/class/compass/akm8962/delay_mag
+    chown system system /sys/class/compass/akm8962/delay_ori
+    chown system system /sys/class/compass/akm8962/accel
+#ZTE_AKMD_FYA 20111020 -------------
+
     # OTG Test
     chown system radio /sys/class/host_notify/usb_otg/booster
     chmod 0660 /sys/class/host_notify/usb_otg/booster
