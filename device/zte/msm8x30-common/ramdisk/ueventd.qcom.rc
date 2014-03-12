@@ -147,3 +147,10 @@
 # wlan
 /dev/wcnss_wlan           0660   system     system
 /dev/wcnss_ctrl           0660   system     system
+
+#by lukai,can't use 660,but 666 can make gsensor and compass work
+
+/sys/devices/i2c-12/12-000f enable 0660 root system
+/sys/devices/i2c-12/12-000f poll 0660 root system
+#/sys/devices/i2c-12/12-000f enable 0666 root system
+#/sys/devices/i2c-12/12-000f poll 0666 root system
