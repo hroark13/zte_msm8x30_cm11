@@ -318,3 +318,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/bin/ztecfg:system/bin/ztecfg \
     $(LOCAL_PATH)/proprietary/bin/zte_charger:system/bin/zte_charger \
     $(LOCAL_PATH)/proprietary/bin/ztediag:system/bin/ztediag
+
+#APN FOR AIO
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/proprietary/etc/apns-conf.xml:system/etc/apns-conf.xml
