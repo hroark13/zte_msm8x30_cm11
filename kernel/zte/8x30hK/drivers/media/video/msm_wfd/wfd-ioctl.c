@@ -39,9 +39,9 @@
 #define WFD_NUM_DEVICES 2
 #define WFD_DEVICE_NUMBER_BASE 38
 #define WFD_DEVICE_SECURE (WFD_DEVICE_NUMBER_BASE + 1)
-#define DEFAULT_WFD_WIDTH 1280
-#define DEFAULT_WFD_HEIGHT 720
-#define VENC_INPUT_BUFFERS 6
+#define DEFAULT_WFD_WIDTH 640
+#define DEFAULT_WFD_HEIGHT 480
+#define VENC_INPUT_BUFFERS 4
 
 struct wfd_device {
 	struct mutex dev_lock;

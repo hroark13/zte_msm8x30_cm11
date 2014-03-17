@@ -98,38 +98,105 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/lib/libdrmtime.so:system/lib/libdrmtime.so \
     $(LOCAL_PATH)/proprietary/lib/libQSEEComAPI.so:system/lib/libQSEEComAPI.so \
     $(LOCAL_PATH)/proprietary/lib/libWVStreamControlAPI_L3.so:system/lib/libWVStreamControlAPI_L3.so \
-    $(LOCAL_PATH)/proprietary/lib/libwvm.so:system/lib/libwvm.so
+    $(LOCAL_PATH)/proprietary/lib/libwvm.so:system/lib/libwvm.so \
+    $(LOCAL_PATH)/proprietary/etc/firmware/vidc.b00:system/etc/firmware/vidc.b00 \
+    $(LOCAL_PATH)/proprietary/etc/firmware/vidc.b01:system/etc/firmware/vidc.b01 \
+    $(LOCAL_PATH)/proprietary/etc/firmware/vidc.b02:system/etc/firmware/vidc.b02 \
+    $(LOCAL_PATH)/proprietary/etc/firmware/vidc.b03:system/etc/firmware/vidc.b03 \
+    $(LOCAL_PATH)/proprietary/etc/firmware/vidc.mdt:system/etc/firmware/vidc.mdt \
+    $(LOCAL_PATH)/proprietary/etc/firmware/vidc_1080p.fw:system/etc/firmware/vidc_1080p.fw \
+    $(LOCAL_PATH)/proprietary/etc/firmware/vidcfw.elf:system/etc/firmware/vidcfw.elf
 
 # Camera
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/proprietary/app/GestureOverlayService.apk:system/app/GestureOverlayService.apk \
+    $(LOCAL_PATH)/proprietary/framework/GestureSDK.jar:system/framework/GestureSDK.jar \
     $(LOCAL_PATH)/proprietary/bin/mm-gs-camctrl-test:system/bin/mm-gs-camctrl-test \
+    $(LOCAL_PATH)/proprietary/bin/mm-jpeg-dec-test:system/bin/mm-jpeg-dec-test \
+    $(LOCAL_PATH)/proprietary/bin/mm-jpeg-dec-test-client:system/bin/mm-jpeg-dec-test-client \
+    $(LOCAL_PATH)/proprietary/bin/mm-jpeg-enc-test:system/bin/mm-jpeg-enc-test \
+    $(LOCAL_PATH)/proprietary/bin/mm-jpeg-enc-test-client:system/bin/mm-jpeg-enc-test-client \
+    $(LOCAL_PATH)/proprietary/bin/mm-jps-enc-test:system/bin/mm-jps-enc-test \
+    $(LOCAL_PATH)/proprietary/bin/mm-mpo-dec-test:system/bin/mm-mpo-dec-test \
+    $(LOCAL_PATH)/proprietary/bin/mm-mpo-enc-test:system/bin/mm-mpo-enc-test \
     $(LOCAL_PATH)/proprietary/bin/mm-qcamera-app:system/bin/mm-qcamera-app \
     $(LOCAL_PATH)/proprietary/bin/mm-qcamera-daemon:system/bin/mm-qcamera-daemon \
     $(LOCAL_PATH)/proprietary/bin/mm-qcamera-test:system/bin/mm-qcamera-test \
     $(LOCAL_PATH)/proprietary/bin/mm-qcamera-testsuite-client:system/bin/mm-qcamera-testsuite-client \
     $(LOCAL_PATH)/proprietary/bin/v4l2-qcamera-app:system/bin/v4l2-qcamera-app \
-    $(LOCAL_PATH)/proprietary/lib/hw/camera.vendor.msm8960.so:system/lib/hw/camera.vendor.msm8960.so \
-    $(LOCAL_PATH)/proprietary/lib/hw/gestures.msm8960.so:system/lib/hw/gestures.msm8960.so \
-    $(LOCAL_PATH)/proprietary/lib/libadsprpc.so:system/lib/libadsprpc.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx175_antishake.so:system/lib/libchromatix_imx175_antishake.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx175_default_video.so:system/lib/libchromatix_imx175_default_video.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx175_lls.so:system/lib/libchromatix_imx175_lls.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx175_preview.so:system/lib/libchromatix_imx175_preview.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx175_zsl_drama.so:system/lib/libchromatix_imx175_zsl_drama.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx175_zsl_panorama.so:system/lib/libchromatix_imx175_zsl_panorama.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx175_zsl.so:system/lib/libchromatix_imx175_zsl.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3h5xa_antishake.so:system/lib/libchromatix_s5k3h5xa_antishake.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3h5xa_default_video.so:system/lib/libchromatix_s5k3h5xa_default_video.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3h5xa_lls.so:system/lib/libchromatix_s5k3h5xa_lls.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3h5xa_preview.so:system/lib/libchromatix_s5k3h5xa_preview.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3h5xa_zsl_drama.so:system/lib/libchromatix_s5k3h5xa_zsl_drama.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3h5xa_zsl_panorama.so:system/lib/libchromatix_s5k3h5xa_zsl_panorama.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3h5xa_zsl.so:system/lib/libchromatix_s5k3h5xa_zsl.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k6a3yx_default_video.so:system/lib/libchromatix_s5k6a3yx_default_video.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k6a3yx_preview.so:system/lib/libchromatix_s5k6a3yx_preview.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k6a3yx_smart_stay.so:system/lib/libchromatix_s5k6a3yx_smart_stay.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k6a3yx_vt_hd.so:system/lib/libchromatix_s5k6a3yx_vt_hd.so \
-    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k6a3yx_vt.so:system/lib/libchromatix_s5k6a3yx_vt.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ar0542_default_video.so:system/lib/libchromatix_ar0542_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ar0542_preview.so:system/lib/libchromatix_ar0542_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ar0542_qtech_default_video.so:system/lib/libchromatix_ar0542_qtech_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ar0542_qtech_preview.so:system/lib/libchromatix_ar0542_qtech_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ar0542_sunny_default_video.so:system/lib/libchromatix_ar0542_sunny_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ar0542_sunny_preview.so:system/lib/libchromatix_ar0542_sunny_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_hi542_default_video.so:system/lib/libchromatix_hi542_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_hi542_mcnex_default_video.so:system/lib/libchromatix_hi542_mcnex_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_hi542_mcnex_preview.so:system/lib/libchromatix_hi542_mcnex_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_hi542_preview.so:system/lib/libchromatix_hi542_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_hi542_qtech_default_video.so:system/lib/libchromatix_hi542_qtech_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_hi542_qtech_preview.so:system/lib/libchromatix_hi542_qtech_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_hi542_sunny_default_video.so:system/lib/libchromatix_hi542_sunny_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_hi542_sunny_preview.so:system/lib/libchromatix_hi542_sunny_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx074_default_video.so:system/lib/libchromatix_imx074_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx074_preview.so:system/lib/libchromatix_imx074_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx074_video_hd.so:system/lib/libchromatix_imx074_video_hd.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx074_zsl.so:system/lib/libchromatix_imx074_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx091_default_video.so:system/lib/libchromatix_imx091_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx091_preview.so:system/lib/libchromatix_imx091_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_imx091_video_hd.so:system/lib/libchromatix_imx091_video_hd.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_mt9e013_default_video.so:system/lib/libchromatix_mt9e013_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_mt9e013_preview.so:system/lib/libchromatix_mt9e013_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_mt9e013_video_hfr.so:system/lib/libchromatix_mt9e013_video_hfr.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov2720_default_video.so:system/lib/libchromatix_ov2720_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov2720_hfr.so:system/lib/libchromatix_ov2720_hfr.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov2720_preview.so:system/lib/libchromatix_ov2720_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov2720_zsl.so:system/lib/libchromatix_ov2720_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov5647_default_video.so:system/lib/libchromatix_ov5647_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov5647_preview.so:system/lib/libchromatix_ov5647_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_default_video.so:system/lib/libchromatix_ov8825_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_mcnex_default_video.so:system/lib/libchromatix_ov8825_mcnex_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_mcnex_preview.so:system/lib/libchromatix_ov8825_mcnex_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_mcnex_zsl.so:system/lib/libchromatix_ov8825_mcnex_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_preview.so:system/lib/libchromatix_ov8825_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_qtech_default_video.so:system/lib/libchromatix_ov8825_qtech_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_qtech_preview.so:system/lib/libchromatix_ov8825_qtech_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_qtech_zsl.so:system/lib/libchromatix_ov8825_qtech_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_truly_default_video.so:system/lib/libchromatix_ov8825_truly_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_truly_preview.so:system/lib/libchromatix_ov8825_truly_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_truly_zsl.so:system/lib/libchromatix_ov8825_truly_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8825_zsl.so:system/lib/libchromatix_ov8825_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_default_video.so:system/lib/libchromatix_ov8835_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_liteon_default_video.so:system/lib/libchromatix_ov8835_liteon_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_liteon_preview.so:system/lib/libchromatix_ov8835_liteon_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_liteon_zsl.so:system/lib/libchromatix_ov8835_liteon_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_mcnex_default_video.so:system/lib/libchromatix_ov8835_mcnex_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_mcnex_preview.so:system/lib/libchromatix_ov8835_mcnex_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_mcnex_zsl.so:system/lib/libchromatix_ov8835_mcnex_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_preview.so:system/lib/libchromatix_ov8835_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_qtech_default_video.so:system/lib/libchromatix_ov8835_qtech_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_qtech_preview.so:system/lib/libchromatix_ov8835_qtech_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_qtech_zsl.so:system/lib/libchromatix_ov8835_qtech_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_sunny_default_video.so:system/lib/libchromatix_ov8835_sunny_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_sunny_preview.so:system/lib/libchromatix_ov8835_sunny_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_sunny_zsl.so:system/lib/libchromatix_ov8835_sunny_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_truly_default_video.so:system/lib/libchromatix_ov8835_truly_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_truly_preview.so:system/lib/libchromatix_ov8835_truly_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_truly_zsl.so:system/lib/libchromatix_ov8835_truly_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov8835_zsl.so:system/lib/libchromatix_ov8835_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov9726_default_video.so:system/lib/libchromatix_ov9726_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_ov9726_preview.so:system/lib/libchromatix_ov9726_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3l1yx_default_video.so:system/lib/libchromatix_s5k3l1yx_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3l1yx_hfr_60fps.so:system/lib/libchromatix_s5k3l1yx_hfr_60fps.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3l1yx_hfr_90fps.so:system/lib/libchromatix_s5k3l1yx_hfr_90fps.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3l1yx_hfr_120fps.so:system/lib/libchromatix_s5k3l1yx_hfr_120fps.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3l1yx_preview.so:system/lib/libchromatix_s5k3l1yx_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3l1yx_video_hd.so:system/lib/libchromatix_s5k3l1yx_video_hd.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k3l1yx_zsl.so:system/lib/libchromatix_s5k3l1yx_zsl.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k4e1_default_video.so:system/lib/libchromatix_s5k4e1_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_s5k4e1_preview.so:system/lib/libchromatix_s5k4e1_preview.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_vx6953_default_video.so:system/lib/libchromatix_vx6953_default_video.so \
+    $(LOCAL_PATH)/proprietary/lib/libchromatix_vx6953_preview.so:system/lib/libchromatix_vx6953_preview.so \
     $(LOCAL_PATH)/proprietary/lib/libgemini.so:system/lib/libgemini.so \
     $(LOCAL_PATH)/proprietary/lib/libgesture_client.so:system/lib/libgesture_client.so \
     $(LOCAL_PATH)/proprietary/lib/libgesture-core.so:system/lib/libgesture-core.so \
@@ -149,14 +216,14 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/lib/libmmcamera_wavelet_lib.so:system/lib/libmmcamera_wavelet_lib.so \
     $(LOCAL_PATH)/proprietary/lib/libmmgesture_services.so:system/lib/libmmgesture_services.so \
     $(LOCAL_PATH)/proprietary/lib/libmmgestures-linux.so:system/lib/libmmgestures-linux.so \
-    $(LOCAL_PATH)/proprietary/lib/libmmjpeg_interface.so:system/lib/libmmjpeg_interface.so \
     $(LOCAL_PATH)/proprietary/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
+    $(LOCAL_PATH)/proprietary/lib/libmmjpeg_interface.so:system/lib/libmmjpeg_interface.so \
     $(LOCAL_PATH)/proprietary/lib/libmmmpod.so:system/lib/libmmmpod.so \
     $(LOCAL_PATH)/proprietary/lib/libmmstillomx.so:system/lib/libmmstillomx.so \
     $(LOCAL_PATH)/proprietary/lib/liboemcamera.so:system/lib/liboemcamera.so \
-    $(LOCAL_PATH)/proprietary/lib/libsecnativefeature.so:system/lib/libsecnativefeature.so \
-    $(LOCAL_PATH)/proprietary/lib/libTsAccm.so:system/lib/libTsAccm.so \
-    $(LOCAL_PATH)/proprietary/lib/libTsAwb.so:system/lib/libTsAwb.so
+    $(LOCAL_PATH)/proprietary/lib/hw/gestures.msm8960.so:system/lib/hw/gestures.msm8960.so \
+    $(LOCAL_PATH)/proprietary/lib/hw/camera.vendor.msm8960.so:system/lib/hw/camera.vendor.msm8960.so \
+    $(LOCAL_PATH)/proprietary/lib/hw/camera.msm8960.so:system/lib/hw/camera.msm8960.so \
 
 # Wifi
 PRODUCT_COPY_FILES += \
@@ -232,7 +299,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/vendor/lib/libqmi_encdec.so:system/vendor/lib/libqmi_encdec.so \
     $(LOCAL_PATH)/proprietary/vendor/lib/libqmiservices.so:system/vendor/lib/libqmiservices.so \
     $(LOCAL_PATH)/proprietary/lib/libril-qc-qmi-1.so:system/lib/libril-qc-qmi-1.so \
-    $(LOCAL_PATH)/proprietary/lib/libril.so:system/lib/libril.so
+    $(LOCAL_PATH)/proprietary/lib/libril.so:system/lib/libril.so \
+    $(LOCAL_PATH)/proprietary/lib/libsecnativefeature.so:system/lib/libsecnativefeature.so
 
 # Sensors
 PRODUCT_COPY_FILES += \
