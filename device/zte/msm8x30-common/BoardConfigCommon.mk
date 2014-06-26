@@ -24,7 +24,6 @@ TARGET_SPECIFIC_HEADER_PATH := device/zte/msm8x30-common/include
 TARGET_NO_INITLOGO := true
 
 # Recovery
-BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/zte/msm8x30-common/recovery/recovery_keys.c
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 TARGET_RECOVERY_FSTAB := device/zte/msm8x30-common/ramdisk/fstab.qcom
