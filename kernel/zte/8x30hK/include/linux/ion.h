@@ -2,7 +2,7 @@
  * include/linux/ion.h
  *
  * Copyright (C) 2011 Google, Inc.
- * Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -43,7 +43,7 @@ enum ion_heap_type {
 	ION_HEAP_TYPE_DMA,
 	ION_HEAP_TYPE_CUSTOM, /* must be last so device specific heaps always
 				 are at the end of this enum */
-	ION_NUM_HEAPS = 16,
+	ION_NUM_HEAPS,
 };
 
 #define ION_HEAP_SYSTEM_MASK		(1 << ION_HEAP_TYPE_SYSTEM)
@@ -227,11 +227,9 @@ struct sg_table *ion_sg_table(struct ion_client *client,
  * ion_map_kernel - create mapping for the given handle
  * @client:	the client
  * @handle:	handle to map
- * @flags:	flags for this mapping
  *
  * Map the given handle into the kernel and return a kernel address that
- * can be used to access this address. If no flags are specified, this
- * will return a non-secure uncached mapping.
+ * can be used to access this address.
  */
 void *ion_map_kernel(struct ion_client *client, struct ion_handle *handle);
 
@@ -423,7 +421,7 @@ static inline struct sg_table *ion_sg_table(struct ion_client *client,
 }
 
 static inline void *ion_map_kernel(struct ion_client *client,
-	struct ion_handle *handle, unsigned long flags)
+	struct ion_handle *handle)
 {
 	return ERR_PTR(-ENODEV);
 }
@@ -454,6 +452,12 @@ static inline int ion_map_iommu(struct ion_client *client,
 			unsigned long *buffer_size,
 			unsigned long flags,
 			unsigned long iommu_flags)
+{
+	return -ENODEV;
+}
+
+static inline int ion_handle_get_size(struct ion_client *client,
+				struct ion_handle *handle, unsigned long *size)
 {
 	return -ENODEV;
 }
@@ -514,12 +518,14 @@ struct ion_allocation_data {
 	unsigned int flags;
 	struct ion_handle *handle;
 };
-struct ion_allocation_data_compat {
+
+struct ion_allocation_data_old {
 	size_t len;
 	size_t align;
 	unsigned int flags;
 	struct ion_handle *handle;
 };
+
 /**
  * struct ion_fd_data - metadata passed to/from userspace for a handle/fd pair
  * @handle:	a handle
@@ -555,17 +561,6 @@ struct ion_custom_data {
 	unsigned int cmd;
 	unsigned long arg;
 };
-struct ion_flush_data {
-        struct ion_handle *handle;
-        int fd;
-        void *vaddr;
-        unsigned int offset;
-        unsigned int length;
-};
-struct ion_flag_data {
-        struct ion_handle *handle;
-        unsigned long flags;
-};
 #define ION_IOC_MAGIC		'I'
 
 /**
@@ -576,8 +571,9 @@ struct ion_flag_data {
  */
 #define ION_IOC_ALLOC		_IOWR(ION_IOC_MAGIC, 0, \
 				      struct ion_allocation_data)
-#define ION_IOC_ALLOC_COMPAT		_IOWR(ION_IOC_MAGIC, 0, \
-				      struct ion_allocation_data_compat)
+#define ION_IOC_ALLOC_COMPAT	_IOWR(ION_IOC_MAGIC, 0, \
+				      struct ion_allocation_data_old)
+
 /**
  * DOC: ION_IOC_FREE - free memory
  *
@@ -613,8 +609,7 @@ struct ion_flag_data {
  * descriptor obtained from ION_IOC_SHARE and returns the struct with the handle
  * filed set to the corresponding opaque handle.
  */
-#define ION_IOC_IMPORT		_IOWR(ION_IOC_MAGIC, 5, struct ion_fd_data)
-#define ION_IOC_IMPORT_COMPAT		_IOWR(ION_IOC_MAGIC, 5, int)
+#define ION_IOC_IMPORT		_IOWR(ION_IOC_MAGIC, 5, int)
 
 /**
  * DOC: ION_IOC_CUSTOM - call architecture specific ion ioctl
@@ -623,12 +618,38 @@ struct ion_flag_data {
  * passes appropriate userdata for that ioctl
  */
 #define ION_IOC_CUSTOM		_IOWR(ION_IOC_MAGIC, 6, struct ion_custom_data)
-#define ION_IOC_CLEAN_CACHES_COMPAT    _IOWR(ION_IOC_MAGIC, 7, \
-                                                struct ion_flush_data)
-#define ION_IOC_INV_CACHES_COMPAT      _IOWR(ION_IOC_MAGIC, 8, \
-                                                struct ion_flush_data)
-#define ION_IOC_CLEAN_INV_CACHES_COMPAT       _IOWR(ION_IOC_MAGIC, 9, \
-                                                struct ion_flush_data)
-#define ION_IOC_GET_FLAGS_COMPAT               _IOWR(ION_IOC_MAGIC, 10, \
-                                                struct ion_flag_data)
+
+/* For compat with old-API blobs. These were moved to the MSM header */
+/**
+ * DOC: ION_IOC_CLEAN_CACHES - clean the caches
+ *
+ * Clean the caches of the handle specified.
+ */
+#define ION_IOC_CLEAN_CACHES_COMPAT	_IOWR(ION_IOC_MAGIC, 7, \
+						struct ion_flush_data)
+/**
+ * DOC: ION_MSM_IOC_INV_CACHES - invalidate the caches
+ *
+ * Invalidate the caches of the handle specified.
+ */
+#define ION_IOC_INV_CACHES_COMPAT	_IOWR(ION_IOC_MAGIC, 8, \
+						struct ion_flush_data)
+/**
+ * DOC: ION_MSM_IOC_CLEAN_CACHES - clean and invalidate the caches
+ *
+ * Clean and invalidate the caches of the handle specified.
+ */
+#define ION_IOC_CLEAN_INV_CACHES_COMPAT	_IOWR(ION_IOC_MAGIC, 9, \
+						struct ion_flush_data)
+
+/**
+ * DOC: ION_IOC_GET_FLAGS - get the flags of the handle
+ *
+ * Gets the flags of the current handle which indicate cachability,
+ * secure state etc.
+ */
+#define ION_IOC_GET_FLAGS_COMPAT	_IOWR(ION_IOC_MAGIC, 10, \
+						struct ion_flag_data)
+
+
 #endif /* _LINUX_ION_H */

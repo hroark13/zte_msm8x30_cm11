@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -23,7 +23,7 @@
 #define KGSL_PWRLEVEL_NOMINAL 1
 #define KGSL_PWRLEVEL_LAST_OFFSET 2
 
-#define KGSL_MAX_CLKS 5
+#define KGSL_MAX_CLKS 6
 
 struct platform_device;
 
@@ -60,6 +60,9 @@ struct kgsl_clk_stats {
  * @irq_name - resource name for the IRQ
  * @restore_slumber - Flag to indicate that we are in a suspend/restore sequence
  * @clk_stats - structure of clock statistics
+ * @pm_qos_req_dma - the power management quality of service structure
+ * @pm_qos_latency - allowed CPU latency in microseconds
+ * @step_mul - multiplier for moving between power levels
  */
 
 struct kgsl_pwrctrl {
@@ -85,6 +88,9 @@ struct kgsl_pwrctrl {
 	s64 time;
 	unsigned int restore_slumber;
 	struct kgsl_clk_stats clk_stats;
+	struct pm_qos_request pm_qos_req_dma;
+	unsigned int pm_qos_latency;
+	unsigned int step_mul;
 };
 
 void kgsl_pwrctrl_irq(struct kgsl_device *device, int state);
@@ -101,8 +107,6 @@ int kgsl_pwrctrl_init_sysfs(struct kgsl_device *device);
 void kgsl_pwrctrl_uninit_sysfs(struct kgsl_device *device);
 void kgsl_pwrctrl_enable(struct kgsl_device *device);
 void kgsl_pwrctrl_disable(struct kgsl_device *device);
-bool kgsl_pwrctrl_isenabled(struct kgsl_device *device);
-
 static inline unsigned long kgsl_get_clkrate(struct clk *clk)
 {
 	return (clk != NULL) ? clk_get_rate(clk) : 0;

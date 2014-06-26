@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -49,11 +49,6 @@ static struct ion_heap_desc ion_heap_meta[] = {
 		.id	= ION_SYSTEM_HEAP_ID,
 		.type	= ION_HEAP_TYPE_SYSTEM,
 		.name	= ION_VMALLOC_HEAP_NAME,
-	},
-	{
-		.id	= ION_SYSTEM_CONTIG_HEAP_ID,
-		.type	= ION_HEAP_TYPE_SYSTEM_CONTIG,
-		.name	= ION_KMALLOC_HEAP_NAME,
 	},
 	{
 		.id	= ION_CP_MM_HEAP_ID,
@@ -218,7 +213,7 @@ static void allocate_co_memory(struct ion_platform_heap *heap,
 		if (shared_heap) {
 			struct ion_cp_heap_pdata *cp_data =
 			   (struct ion_cp_heap_pdata *) shared_heap->extra_data;
-			if (cp_data->mem_is_fmem && cp_data->fixed_position == FIXED_MIDDLE) {
+			if (cp_data->fixed_position == FIXED_MIDDLE) {
 				const struct fmem_data *fmem_info =
 					fmem_get_info();
 
@@ -402,6 +397,7 @@ static void free_pdata(const struct ion_platform_data *pdata)
 	unsigned int i;
 	for (i = 0; i < pdata->nr; ++i)
 		kfree(pdata->heaps[i].extra_data);
+	kfree(pdata->heaps);
 	kfree(pdata);
 }
 
@@ -513,6 +509,7 @@ static struct ion_platform_data *msm_ion_parse_dt(
 					const struct device_node *dt_node)
 {
 	struct ion_platform_data *pdata = 0;
+	struct ion_platform_heap *heaps = NULL;
 	struct device_node *node;
 	uint32_t val = 0;
 	int ret = 0;
@@ -525,11 +522,17 @@ static struct ion_platform_data *msm_ion_parse_dt(
 	if (!num_heaps)
 		return ERR_PTR(-EINVAL);
 
-	pdata = kzalloc(sizeof(struct ion_platform_data) +
-			num_heaps*sizeof(struct ion_platform_heap), GFP_KERNEL);
+	pdata = kzalloc(sizeof(struct ion_platform_data), GFP_KERNEL);
 	if (!pdata)
 		return ERR_PTR(-ENOMEM);
 
+	heaps = kzalloc(sizeof(struct ion_platform_heap)*num_heaps, GFP_KERNEL);
+	if (!heaps) {
+		kfree(pdata);
+		return ERR_PTR(-ENOMEM);
+	}
+
+	pdata->heaps = heaps;
 	pdata->nr = num_heaps;
 
 	for_each_child_of_node(dt_node, node) {

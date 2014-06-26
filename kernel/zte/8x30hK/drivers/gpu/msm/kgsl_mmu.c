@@ -345,11 +345,11 @@ kgsl_mmu_log_fault_addr(struct kgsl_mmu *mmu, unsigned int pt_base,
 	spin_lock(&kgsl_driver.ptlock);
 	list_for_each_entry(pt, &kgsl_driver.pagetable_list, list) {
 		if (mmu->mmu_ops->mmu_pt_equal(mmu, pt, pt_base)) {
-			if ((addr & ~(PAGE_SIZE-1)) == pt->fault_addr) {
+			if ((addr & (PAGE_SIZE-1)) == pt->fault_addr) {
 				ret = 1;
 				break;
 			} else {
-				pt->fault_addr = (addr & ~(PAGE_SIZE-1));
+				pt->fault_addr = (addr & (PAGE_SIZE-1));
 				ret = 0;
 				break;
 			}
@@ -562,7 +562,7 @@ void kgsl_mmu_putpagetable(struct kgsl_pagetable *pagetable)
 }
 EXPORT_SYMBOL(kgsl_mmu_putpagetable);
 
-void kgsl_setstate(struct kgsl_mmu *mmu, unsigned int context_id,
+int kgsl_setstate(struct kgsl_mmu *mmu, unsigned int context_id,
 			uint32_t flags)
 {
 	struct kgsl_device *device = mmu->device;
@@ -570,14 +570,16 @@ void kgsl_setstate(struct kgsl_mmu *mmu, unsigned int context_id,
 
 	if (!(flags & (KGSL_MMUFLAGS_TLBFLUSH | KGSL_MMUFLAGS_PTUPDATE))
 		&& !adreno_is_a2xx(adreno_dev))
-		return;
+		return 0;
 
 	if (KGSL_MMU_TYPE_NONE == kgsl_mmu_type)
-		return;
+		return 0;
 	else if (device->ftbl->setstate)
-		device->ftbl->setstate(device, context_id, flags);
+		return device->ftbl->setstate(device, context_id, flags);
 	else if (mmu->mmu_ops->mmu_device_setstate)
-		mmu->mmu_ops->mmu_device_setstate(mmu, flags);
+		return mmu->mmu_ops->mmu_device_setstate(mmu, flags);
+
+	return 0;
 }
 EXPORT_SYMBOL(kgsl_setstate);
 
@@ -586,7 +588,6 @@ void kgsl_mh_start(struct kgsl_device *device)
 	struct kgsl_mh *mh = &device->mh;
 	/* force mmu off to for now*/
 	kgsl_regwrite(device, MH_MMU_CONFIG, 0);
-	kgsl_idle(device);
 
 	/* define physical memory range accessible by the core */
 	kgsl_regwrite(device, MH_MMU_MPU_BASE, mh->mpu_base);
@@ -863,9 +864,8 @@ int kgsl_mmu_map_global(struct kgsl_pagetable *pagetable,
 
 	/*global mappings must have the same gpu address in all pagetables*/
 	if (gpuaddr && gpuaddr != memdesc->gpuaddr) {
-		KGSL_CORE_ERR("pt %p addr mismatch phys 0x%08x"
-			"gpu 0x%0x 0x%08x", pagetable, memdesc->physaddr,
-			gpuaddr, memdesc->gpuaddr);
+		KGSL_CORE_ERR("pt %p addr mismatch phys %pa gpu 0x%0x 0x%08x",
+		     pagetable, &memdesc->physaddr, gpuaddr, memdesc->gpuaddr);
 		goto error_unmap;
 	}
 	return result;

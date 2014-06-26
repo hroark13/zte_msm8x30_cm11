@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -21,6 +21,7 @@
 #include "adreno_ringbuffer.h"
 #include "kgsl_cffdump.h"
 #include "kgsl_pwrctrl.h"
+#include "adreno_trace.h"
 
 #include "a2xx_reg.h"
 #include "a3xx_reg.h"
@@ -67,6 +68,14 @@ static const struct pm_id_name pm3_types[] = {
 	{CP_SET_PROTECTED_MODE,	"ST_PRT_M"},
 	{CP_SET_SHADER_BASES,		"ST_SHD_B"},
 	{CP_WAIT_FOR_IDLE,		"WAIT4IDL"},
+};
+
+static const struct pm_id_name pm3_nop_values[] = {
+	{KGSL_CONTEXT_TO_MEM_IDENTIFIER,	"CTX_SWCH"},
+	{KGSL_CMD_IDENTIFIER,			"CMD__EXT"},
+	{KGSL_CMD_INTERNAL_IDENTIFIER,		"CMD__INT"},
+	{KGSL_START_OF_IB_IDENTIFIER,		"IB_START"},
+	{KGSL_END_OF_IB_IDENTIFIER,		"IB___END"},
 };
 
 static uint32_t adreno_is_pm4_len(uint32_t word)
@@ -124,6 +133,28 @@ static const char *adreno_pm4_name(uint32_t word)
 				return pm3_types[i].name;
 		}
 		return "????????";
+	}
+	return "????????";
+}
+
+static bool adreno_is_pm3_nop_value(uint32_t word)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(pm3_nop_values); ++i) {
+		if (word == pm3_nop_values[i].id)
+			return 1;
+	}
+	return 0;
+}
+
+static const char *adreno_pm3_nop_name(uint32_t word)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(pm3_nop_values); ++i) {
+		if (word == pm3_nop_values[i].id)
+			return pm3_nop_values[i].name;
 	}
 	return "????????";
 }
@@ -244,8 +275,13 @@ static void adreno_dump_rb_buffer(const void *buf, size_t len,
 				"%s", adreno_pm4_name(ptr4[j]));
 			*argp = -(adreno_is_pm4_len(ptr4[j])+1);
 		} else {
-			lx += scnprintf(linebuf + lx, linebuflen - lx,
-				"%8.8X", ptr4[j]);
+			if (adreno_is_pm3_nop_value(ptr4[j]))
+				lx += scnprintf(linebuf + lx, linebuflen - lx,
+					"%s", adreno_pm3_nop_name(ptr4[j]));
+			else
+				lx += scnprintf(linebuf + lx, linebuflen - lx,
+					"%8.8X", ptr4[j]);
+
 			if (*argp > 1)
 				--*argp;
 			else if (*argp == 1) {
@@ -724,11 +760,14 @@ int adreno_dump(struct kgsl_device *device, int manual)
 	kgsl_regread(device, REG_CP_IB2_BASE, &cp_ib2_base);
 	kgsl_regread(device, REG_CP_IB2_BUFSZ, &cp_ib2_bufsz);
 
+	trace_adreno_gpu_fault(rbbm_status, cp_rb_rptr, cp_rb_wptr,
+			cp_ib1_base, cp_ib1_bufsz, cp_ib2_base, cp_ib2_bufsz);
+
 	/* If postmortem dump is not enabled, dump minimal set and return */
 	if (!device->pm_dump_enable) {
 
 		KGSL_LOG_DUMP(device,
-			"STATUS %08X | IB1:%08X/%08X | IB2: %08X/%08X"
+			"RBBM STATUS %08X | IB1:%08X/%08X | IB2: %08X/%08X"
 			" | RPTR: %04X | WPTR: %04X\n",
 			rbbm_status,  cp_ib1_base, cp_ib1_bufsz, cp_ib2_base,
 			cp_ib2_bufsz, cp_rb_rptr, cp_rb_wptr);
@@ -894,7 +933,8 @@ int adreno_dump(struct kgsl_device *device, int manual)
 			adreno_dump_regs(device, a3xx_registers,
 					a3xx_registers_count);
 
-			if (adreno_is_a330(adreno_dev))
+			if (adreno_is_a330(adreno_dev) ||
+				adreno_is_a305b(adreno_dev))
 				adreno_dump_regs(device, a330_registers,
 					a330_registers_count);
 		}
@@ -903,5 +943,9 @@ int adreno_dump(struct kgsl_device *device, int manual)
 error_vfree:
 	vfree(rb_copy);
 end:
+	/* Restart the dispatcher after a manually triggered dump */
+	if (manual)
+		adreno_dispatcher_start(adreno_dev);
+
 	return result;
 }

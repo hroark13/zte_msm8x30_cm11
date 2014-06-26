@@ -130,12 +130,14 @@ struct kgsl_driver {
 		unsigned int mapped_max;
 		unsigned int histogram[16];
 	} stats;
+	unsigned int full_cache_threshold;
 };
 
 extern struct kgsl_driver kgsl_driver;
 
 struct kgsl_pagetable;
 struct kgsl_memdesc;
+struct kgsl_cmdbatch;
 
 struct kgsl_memdesc_ops {
 	int (*vmflags)(struct kgsl_memdesc *);
@@ -160,7 +162,7 @@ struct kgsl_memdesc {
 	void *hostptr; /* kernel virtual address */
 	unsigned long useraddr; /* userspace address */
 	unsigned int gpuaddr;
-	unsigned int physaddr;
+	phys_addr_t physaddr;
 	unsigned int size;
 	unsigned int priv; /* Internal flags and settings */
 	struct scatterlist *sg;
@@ -168,7 +170,6 @@ struct kgsl_memdesc {
 	unsigned int sglen_alloc;  /* Allocated entries in the sglist */
 	struct kgsl_memdesc_ops *ops;
 	unsigned int flags; /* Flags set from userspace */
-	int *faulted;
 };
 
 /* List of different memory entry types */
@@ -193,7 +194,6 @@ struct kgsl_mem_entry {
 	struct kgsl_process_private *priv;
 	/* Initialized to 0, set to 1 when entry is marked for freeing */
 	int pending_free;
-	struct kgsl_device_private *dev_priv;
 };
 
 #ifdef CONFIG_MSM_KGSL_MMU_PAGE_FAULT
@@ -202,7 +202,6 @@ struct kgsl_mem_entry {
 #define MMU_CONFIG 1
 #endif
 
-void kgsl_hang_check(struct work_struct *work);
 void kgsl_mem_entry_destroy(struct kref *kref);
 int kgsl_postmortem_dump(struct kgsl_device *device, int manual);
 
@@ -237,7 +236,7 @@ void kgsl_trace_regwrite(struct kgsl_device *device, unsigned int offset,
 		unsigned int value);
 
 void kgsl_trace_issueibcmds(struct kgsl_device *device, int id,
-		struct kgsl_ibdesc *ibdesc, int numibs,
+		struct kgsl_cmdbatch *cmdbatch,
 		unsigned int timestamp, unsigned int flags,
 		int result, unsigned int type);
 
@@ -314,10 +313,10 @@ static inline int timestamp_cmp(unsigned int a, unsigned int b)
 	return ((a > b) && (a - b <= KGSL_TIMESTAMP_WINDOW)) ? 1 : -1;
 }
 
-static inline void
+static inline int
 kgsl_mem_entry_get(struct kgsl_mem_entry *entry)
 {
-	kref_get(&entry->refcount);
+	return kref_get_unless_zero(&entry->refcount);
 }
 
 static inline void
